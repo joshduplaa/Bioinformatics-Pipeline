@@ -13,11 +13,12 @@ Python Version: 3.11.3
 import argparse
 import sys
 import os
+import util.readsortseqs as readsortseqs 
 
 ####Task #1 – Sort sequence data from longest to shortest
-def Task_1():
-
-    return sortedSequences
+def Task_1(args):
+    sortedSequenceList, labelToSeq, seqToLabel, titleList = readsortseqs.main(args)
+    return sortedSequenceList
 
 
 ##Task 2 - sequence clustering
@@ -32,9 +33,8 @@ Task 2 function "clusters" Sequences by to do the folowing:
 """
 def Task_2():
 
+
     return repSequences
-
-
 
 ##Task 3 - Chimera Detection and Filtering
 """
@@ -93,6 +93,7 @@ def main():
     elif args.score_matrix == "input/BLOSUM62.mtx":
         scoringType = "BLOSUM62"
     
+    #read in score matrix
     with open(args.score_matrix, "r") as file:
         score_matrix = file.readlines()
     scoreIndex = 0
@@ -105,7 +106,7 @@ def main():
     gapPenalty = int(score_matrix[3][len(score_matrix[3])-1])
 
     #task 1
-    sequenceList, labelToSeq, seqToLabel, titleList = Task_1()
+    sortedSequenceList, labelToSeq, seqToLabel, titleList = Task_1(args)
 
     #task 2
     repSequences = Task_2()
