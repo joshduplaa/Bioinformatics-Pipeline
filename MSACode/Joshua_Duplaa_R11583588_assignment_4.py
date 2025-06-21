@@ -16,7 +16,7 @@ import sys
 import os
 import math 
 #modified global aligmment script from assignment 2, returns aligned sequences and score
-import globalAlign
+import util.globalAlign as globalAlign
 
 
 def ReadAndStoreSequences(args):

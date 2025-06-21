@@ -14,11 +14,12 @@ import argparse
 import sys
 import os
 import util.readsortseqs as readsortseqs 
+import util.globalAlign as globalAlign
 
 ####Task #1 – Sort sequence data from longest to shortest
 def Task_1(args):
     sortedSequenceList, labelToSeq, seqToLabel, titleList = readsortseqs.main(args)
-    return sortedSequenceList
+    return sortedSequenceList, labelToSeq, seqToLabel, titleList
 
 
 ##Task 2 - sequence clustering
@@ -26,16 +27,38 @@ def Task_1(args):
 Sequence clustering is grouping high similar sequences together and then use single sequence to represent them all.
 Task 2 function "clusters" Sequences by to do the folowing:
     -Take the sorted list of sequences and mark the first(longest) sequence as the first representative sequence.
-    -Perform a one to many alignment for the representative sequence to every other sequence.
-    -We are adding sequences to a list of representative sequences that have a percent identity >= 97% of the representative sequence
-    -percent identity = count_of_aligneNucleotides/len(alignedSequence)
-    -return list of representative sequences.
+    -Perform a global aligmnent for the representative sequence to every other sequence.
+    -During alignment, evaluate percent identity, if percentidentity>=97%, add it to the the current repsequence cluster.
+    -Create new clusters for sequences that did not get added to a representative sequence list.
+    -iterate for every cluster until no new clusters are added.
+    -evaluate representative sequences for each new cluster created with 
 """
-def Task_2():
-
+def Task_2(sortedSequenceList, gapPenalty, score_matrix):
+    #clusters are a list of lists, list of individual clusters. Technically a jagged 2d array.
+    #first seq is the first representative sequence
+    clusters = [[sortedSequenceList[0]]]
+    repSeqs = {}
+    repSeqs[0] = sortedSequenceList[0]
+    sortedSequenceList = [x for x in sortedSequenceList if x not in repSeqs]
+    #One to all alignment
+    for seq in sortedSequenceList:
+        
+        sequencePair = [, seq] #sequenceOne = sequenceList[i], sequenceTwo = sequence
+        alignedSequences, alignmentScore = globalAlign.main(sequencePair, gapPenalty, score_matrix)
+        percentIdentity = CalculatePercentIdentity(alignedSequences)
 
     return repSequences
 
+def CalculatePercentIdentity(alignedSequences):
+        identicalAlignments = 0
+        for index in range(len(alignedSequences[0])):
+            nucleotide1 = alignedSequences[0][index]
+            nucleotide2 = alignedSequences[1][index]
+            if nucleotide1 == nucleotide2 and nucleotide1 != "-":
+                identicalAlignments += 1
+        
+        percentIdentity = (identicalAlignments/len(alignedSequences[0]))*100
+        return percentIdentity
 ##Task 3 - Chimera Detection and Filtering
 """
 Conditions for a chimeric sequence::
@@ -109,7 +132,7 @@ def main():
     sortedSequenceList, labelToSeq, seqToLabel, titleList = Task_1(args)
 
     #task 2
-    #repSequences = Task_2()
+    repSequences = Task_2(sortedSequenceList, gapPenalty, score_matrix)
 
     #task 3
     #nonChimericSequences = Task_3()
