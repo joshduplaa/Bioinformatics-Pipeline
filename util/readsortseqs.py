@@ -52,6 +52,7 @@ def ReadAndStoreSequences(args):
 def main(args):
     #read in the sequences
     sortedSequenceList, labelToSeq, seqToLabel, titleList = ReadAndStoreSequences(args)
+    print(sortedSequenceList)
     return sortedSequenceList, labelToSeq, seqToLabel, titleList
 
 if __name__ == "__main__":

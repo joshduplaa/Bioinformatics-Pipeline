@@ -109,13 +109,13 @@ def main():
     sortedSequenceList, labelToSeq, seqToLabel, titleList = Task_1(args)
 
     #task 2
-    repSequences = Task_2()
+    #repSequences = Task_2()
 
     #task 3
-    nonChimericSequences = Task_3()
+    #nonChimericSequences = Task_3()
 
     #task 4
-    alignedNonChiSeqs = Task_4()
+    #alignedNonChiSeqs = Task_4()
 
 
 
