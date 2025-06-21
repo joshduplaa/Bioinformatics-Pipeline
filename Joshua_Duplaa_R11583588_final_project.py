@@ -36,18 +36,35 @@ Task 2 function "clusters" Sequences by to do the folowing:
 def Task_2(sortedSequenceList, gapPenalty, score_matrix):
     #clusters are a list of lists, list of individual clusters. Technically a jagged 2d array.
     #first seq is the first representative sequence
-    clusters = [[sortedSequenceList[0]]]
-    repSeqs = {}
-    repSeqs[0] = sortedSequenceList[0]
-    sortedSequenceList = [x for x in sortedSequenceList if x not in repSeqs]
+    clusters = []
+    repSeqs = [sortedSequenceList[0]]
+    #the first element of each cluster should be the repSeq, with thr repSeqs hashset index = cluster index 
     #One to all alignment
-    for seq in sortedSequenceList:
-        
-        sequencePair = [, seq] #sequenceOne = sequenceList[i], sequenceTwo = sequence
+    sequenceList = [x for x in sortedSequenceList]
+    sequenceList.remove(repSeqs[0])
+    for i in range(len(sortedSequenceList)):
+        repSeq = repSeqs[i]
+        repSeqCluster, newCluster = buildCluster(repSeq, sequenceList, gapPenalty, score_matrix)
+        repSeqs.append(newCluster[0]) #adds new representative sequence
+        repSeqCluster = [repSeq] + repSeqCluster
+        clusters.append(repSeqCluster)
+        sequenceList = newCluster[1:]
+
+    return repSeqs, clusters
+
+def buildCluster(repSeq, sequenceList, gapPenalty, score_matrix):
+    repSeqCluster = []
+    newCluster = []
+    for seq in sequenceList:
+        sequencePair = [repSeq, seq]
         alignedSequences, alignmentScore = globalAlign.main(sequencePair, gapPenalty, score_matrix)
         percentIdentity = CalculatePercentIdentity(alignedSequences)
+        if percentIdentity>=97:
+            repSeqCluster.append(seq)
+        else:
+            newCluster.append(seq)
 
-    return repSequences
+    return repSeqCluster, newCluster
 
 def CalculatePercentIdentity(alignedSequences):
         identicalAlignments = 0
