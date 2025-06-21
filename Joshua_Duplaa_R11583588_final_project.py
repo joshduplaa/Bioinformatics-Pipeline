@@ -42,15 +42,18 @@ def Task_2(sortedSequenceList, gapPenalty, score_matrix):
     #One to all alignment
     sequenceList = [x for x in sortedSequenceList]
     sequenceList.remove(repSeqs[0])
+
     for i in range(len(sortedSequenceList)):
         repSeq = repSeqs[i]
         repSeqCluster, newCluster = buildCluster(repSeq, sequenceList, gapPenalty, score_matrix)
+        repSeqCluster = [repSeq] + repSeqCluster
+        clusters.append(repSeqCluster)
         if len(newCluster) == 0:
             break
         repSeqs.append(newCluster[0]) #adds new representative sequence
-        repSeqCluster = [repSeq] + repSeqCluster
-        clusters.append(repSeqCluster)
         sequenceList = newCluster[1:]
+        
+
 
     return repSeqs, clusters
 
