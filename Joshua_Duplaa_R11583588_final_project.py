@@ -45,6 +45,8 @@ def Task_2(sortedSequenceList, gapPenalty, score_matrix):
     for i in range(len(sortedSequenceList)):
         repSeq = repSeqs[i]
         repSeqCluster, newCluster = buildCluster(repSeq, sequenceList, gapPenalty, score_matrix)
+        if len(newCluster) == 0:
+            break
         repSeqs.append(newCluster[0]) #adds new representative sequence
         repSeqCluster = [repSeq] + repSeqCluster
         clusters.append(repSeqCluster)
@@ -149,8 +151,9 @@ def main():
     sortedSequenceList, labelToSeq, seqToLabel, titleList = Task_1(args)
 
     #task 2
-    repSequences = Task_2(sortedSequenceList, gapPenalty, score_matrix)
+    repSeqs, clusters = Task_2(sortedSequenceList, gapPenalty, score_matrix)
 
+    print("pause for debugging")
     #task 3
     #nonChimericSequences = Task_3()
 
