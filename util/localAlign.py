@@ -191,10 +191,8 @@ def Task2(sequenceList, gapPenalty, score_matrix):
 
     return alignedSequences, alignmentScore
 
-def main(sequenceList, score_matrix):
+def main(sequenceList, gapPenalty, score_matrix):
     #Execute task 2 - aligning the sequences
-    gapPenalty = int(score_matrix[3][len(score_matrix[3])-1])
-
     alignedSequences, alignmentScore = Task2(sequenceList, gapPenalty, score_matrix)
 
     return alignedSequences, alignmentScore

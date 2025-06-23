@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
 =============================================================================
-Title : Joshua_Duplaa_R11583588_assignment2.py
+Title : globalAlign.py
 Description : This is an implementation of Needleman Wunch to do global pairwise alignment.
-Author : Joshua Duplaa (R11583588)
+Author : Joshua Duplaa
 Date : 10/11/2024
 Version : 3.0
 Usage : python3 Joshua_Duplaa_R11583588_assignment2.py -i "in.fna" -o "out.fna" -s "BlOSUM50.mtx"

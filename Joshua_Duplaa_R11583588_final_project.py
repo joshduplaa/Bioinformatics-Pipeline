@@ -109,12 +109,20 @@ A high-level algorithm for this process is as follows:
 def  Task_3(repSeqs, clusters, gapPenalty, score_matrix):
     #goal of the task, classify clusters as nonchimeric or chimeric
 
-    for i in range(len(repSeqs)):
+    goodAlignments = []
+    for i in range(len(repSeqs)-1):
         seq1 = repSeqs[i]
-        for j in range(i, len(repSeqs)):
+        for j in range(i+1, len(repSeqs)):
             seq2 = repSeqs[j]
             alignedSequences, alignmentScore = localAlign.main([seq1, seq2], gapPenalty, score_matrix)
-            
+            alignmentLen = len(alignedSequences[0])
+            print(alignmentLen), print(alignmentScore)
+            if(alignmentLen<60 or alignmentScore<50):
+                continue
+            else:
+                goodAlignments.append([alignedSequences])
+    
+                
     
     print(repSeqs)
     print(clusters)
@@ -169,7 +177,7 @@ def main():
 
     print("pause for debugging")
     #task 3
-    nonChimericSequences = Task_3(repSeqs, clusters)
+    nonChimericSequences = Task_3(repSeqs, clusters, gapPenalty, score_matrix)
 
     #task 4
     #alignedNonChiSeqs = Task_4()

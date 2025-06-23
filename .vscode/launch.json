@@ -13,7 +13,7 @@
             "args": [
                 "-i", "input/final.fna",
                 "-o", "output.fna",
-                "-s", "input/BLOSUM50.mtx"
+                "-s", "input/BLOSUM62.mtx"
             ]
         }
     ]
