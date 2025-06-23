@@ -15,6 +15,7 @@ import sys
 import os
 import util.readsortseqs as readsortseqs 
 import util.globalAlign as globalAlign
+import util.localAlign as localAlign
 
 ####Task #1 – Sort sequence data from longest to shortest
 def Task_1(args):
@@ -53,8 +54,6 @@ def Task_2(sortedSequenceList, gapPenalty, score_matrix):
         repSeqs.append(newCluster[0]) #adds new representative sequence
         sequenceList = newCluster[1:]
         
-
-
     return repSeqs, clusters
 
 def buildCluster(repSeq, sequenceList, gapPenalty, score_matrix):
@@ -92,8 +91,8 @@ A high-level algorithm for this process is as follows:
             a. Reject and remove any alignment that fails to meet the following criteria:
                 i. Good alignments must reach an alignment score ≥50.
                 ii. Good alignments must be at least 60 bases in length.
-    2. For each representative sequence (A), determine if there exist good alignments (defined above)
-        between it and two other representative sequences (B and C) such that the size of B > A and the size of
+    2. For each representative sequence (A), determine: if there exist good alignments (defined above)
+        between it and two other representative sequences (B and C) where the cluster size of B > A and the cluster size of
         C is >A.
         a. In other words, the number of sequences in clusters B and C are greater than the number in
         cluster A.
@@ -107,7 +106,19 @@ A high-level algorithm for this process is as follows:
         Output section below.
 """
 
-def Task_3():
+def  Task_3(repSeqs, clusters, gapPenalty, score_matrix):
+    #goal of the task, classify clusters as nonchimeric or chimeric
+
+    for i in range(len(repSeqs)):
+        seq1 = repSeqs[i]
+        for j in range(i, len(repSeqs)):
+            seq2 = repSeqs[j]
+            alignedSequences, alignmentScore = localAlign.main([seq1, seq2], gapPenalty, score_matrix)
+            
+    
+    print(repSeqs)
+    print(clusters)
+
 
     return nonChimericSequences
 
@@ -158,7 +169,7 @@ def main():
 
     print("pause for debugging")
     #task 3
-    #nonChimericSequences = Task_3()
+    nonChimericSequences = Task_3(repSeqs, clusters)
 
     #task 4
     #alignedNonChiSeqs = Task_4()
