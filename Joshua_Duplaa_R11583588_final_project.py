@@ -228,10 +228,10 @@ def main():
 
     print("pause for debugging")
     #task 3
-    nonChimericSequences = Task_3(repSeqs, clusters, gapPenalty, score_matrix)
+    chimericClusters, nonChimericClusters = Task_3(repSeqs, clusters, gapPenalty, score_matrix)
 
     #task 4
-    #alignedNonChiSeqs = Task_4()
+    alignedNonChiSeqs = Task_4(nonChimericClusters, gapPenalty, score_matrix)
 
 
 
