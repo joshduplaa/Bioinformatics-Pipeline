@@ -108,6 +108,8 @@ A high-level algorithm for this process is as follows:
 
 def  Task_3(repSeqs, clusters, gapPenalty, score_matrix):
     #goal of the task, classify clusters as nonchimeric or chimeric
+    chimericClusters = []  #list for chimeric clusters (their representative sequences)
+    nonChimeric = []   #list for non chimeric clusters
 
     goodAlignments = []
     for i in range(len(repSeqs)-1):
@@ -120,15 +122,53 @@ def  Task_3(repSeqs, clusters, gapPenalty, score_matrix):
             if(alignmentLen<60 or alignmentScore<50):
                 continue
             else:
-                goodAlignments.append([alignedSequences])
-    
-                
+                goodAlignments.append([repSeqs[i], repSeqs[j]])
+    #good alignments determined
+    #determine if any repSequence appears twice in the goodAlignments list
+    seen = []
+    seenPairs = []
+    for item in goodAlignments:
+        if (item[0] in seen):
+            clusterSizeA = repSeqs.index(item[0])
+            chimericClusters = compareRepSeq(item, item[0], repSeqs, clusters, seenPairs, chimeraClusters)
+        elif(item[1] in seen):
+            
+            chimericClusters = compareRepSeq(item, item[1], repSeqs, clusters, seenPairs, chimeraClusters)
+        else:
+            seen.append(item[0], item[1])
+            seenPairs.append([item[0], item[1]])
+
     
     print(repSeqs)
     print(clusters)
 
 
-    return nonChimericSequences
+    return chimericClusters, nonChimericClusters
+
+def compareRepSeq(item, possChim, repSeqs, clusters, seenPairs, chimericClusters):
+    #compare cluster size of item[0] to item[1], also compare cluster size to previously seen 
+    seqIndex1 = repSeqs.index(item[0])
+    seqIndex2 = repSeqs.index(item[1])
+    #first two cluster sizes 
+    clusterSizeA = len(clusters[seqIndex1])
+    clusterSizeB = len(clusters[seqIndex2])
+    #loop to find the first occurence of the possibly chimeric sequence
+    for idx in range(len(seenPairs)):
+        if possChim in seenPairs[idx]: #if the possibly chimeric sequence is seen in any of the seen pairs
+            for seq in seenPairs[idx]:
+                if seq == possChim:
+                    continue
+                else:
+                    seqIndex3 = repSeqs.index(seq)
+                    clusterSizeC = len(clusters[seqIndex3]) #cluster size to compare to determine if possChim is chimeric
+                    if clusterSizeB > clusterSizeA and clusterSizeC > clusterSizeA:
+                        chimericClusters.append(possChim)
+                    else:
+                        continue
+        
+
+    return chimericClusters
+
 
 
 ##Task 4 - Multiple sequence Alignment
