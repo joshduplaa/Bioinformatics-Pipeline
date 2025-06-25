@@ -16,6 +16,7 @@ import os
 import util.readsortseqs as readsortseqs 
 import util.globalAlign as globalAlign
 import util.localAlign as localAlign
+import util.msa as msa
 
 ####Task #1 – Sort sequence data from longest to shortest
 def Task_1(args):
@@ -186,7 +187,14 @@ def FindClusterSizeC(possChim, repSeqs, clusters, seenPairs):
 """
 Perform an MSA of non chimeric sequences
 """
-def Task_4(nonChimericSequences):
+def Task_4(nonChimericClusters):
+    #merge all non-chimeric sequences into a single list
+    nonChimericSequences = []
+    for cluster in nonChimericClusters:
+        for sequence in cluster:
+            nonChimericSequences.append(sequence)
+
+    
 
     return alignedNonChiSeqs
 
