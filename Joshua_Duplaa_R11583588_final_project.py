@@ -195,7 +195,7 @@ def Task_4(nonChimericClusters, gapPenalty, score_matrix):
             nonChimericSequences.append(sequence)
     
     alignedNonChiSeqs, msaScore = msa.main(nonChimericSequences, gapPenalty, score_matrix)
-    
+
 
     return alignedNonChiSeqs, msaScore
 
@@ -242,6 +242,7 @@ def main():
     #task 4
     alignedNonChiSeqs, msaScore = Task_4(nonChimericClusters, gapPenalty, score_matrix)
 
+    print(alignedNonChiSeqs) 
 
 
 if __name__ == "__main__":

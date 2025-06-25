@@ -30,7 +30,7 @@ def SmithWaterman(sequencesToAlign, gapPenalty, score_matrix):
     for rowIndex in range(len(alignMatrix)):  #iterate over row indices
         for colIndex in range(len(alignMatrix[rowIndex])):  #iterate over column indices
             if alignMatrix[rowIndex][colIndex] == alignmentScore:  
-                print("Encountered alignmentScore at:", rowIndex, colIndex)
+                #print("Encountered alignmentScore at:", rowIndex, colIndex)
                 traceRow = rowIndex
                 traceCol = colIndex
 
@@ -154,8 +154,6 @@ def AlignSequence(traceback, startRow, startCol):
     #Finished stepping through matrix when 0 is reached, starting point is the last occurence of the alignment score
     leftSequence = ""
     topSequence = ""
-    print(startRow)
-    print(startCol)
     i = startRow
     j = startCol
 

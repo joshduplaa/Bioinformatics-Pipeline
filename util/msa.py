@@ -19,41 +19,6 @@ import math
 import util.globalAlign as globalAlign
 
 
-def ReadAndStoreSequences(args):
-    #sequenceLabel has the title, sequenceDict has title:sequence sequenceDict[title]=sequence
-    #validate the input file path
-    if not os.path.exists(args.input):
-        print(f"Error: The input file path does not exist.")
-        sys.exit(1)
-
-    with open(args.input, "r") as file:
-        sequenceFile = [line.strip() for line in file]
-
-    #dictionary for quick sequence lookup
-    labelToSeq = {}
-    sequenceList = []
-    titleList = []
-    seqIndex = -1
- 
-    for line in sequenceFile:
-        if line[0] == ">":
-            #skip line and set label To Seq
-            label = line
-            sequence = ""
-            sequenceList.append("")
-            titleList.append(line)
-            seqIndex += 1
-        else:
-            sequence += line
-            labelToSeq[label] = sequence
-            sequenceList[seqIndex] = sequence
-    
-    seqToLabel = {value: key for key, value in labelToSeq.items()}
-    #sortedSequenceList = sorted(sequenceList, key=len, reverse=True)
-
-    return sequenceList, labelToSeq, seqToLabel, titleList
-
-
 def CalcDistanceScore(AlignmentScore, topSequence, leftSequence, scoringType):
     #first normalize the Alignment score
     #find max alignment score, which is length * match score
@@ -124,12 +89,6 @@ def findClosestSeqs(distanceMatrixCopy):
     
     return closestSequences
 
-
-def Task_1(args):
-    sequenceList, labelToSeq, seqToLabel, titleList = ReadAndStoreSequences(args)
-    
-    return sequenceList, labelToSeq, seqToLabel, titleList
-
 def Task_2(sequenceList, gapPenalty, score_matrix, scoringType):
     #build the n+1 x n+1 empty distance matrix(List of lists), build first row with column labels (1 for seq1, 2 for seq2, etc.)
     distanceMatrix = [list(range(len(sequenceList)+1))]
@@ -149,7 +108,6 @@ def Task_2(sequenceList, gapPenalty, score_matrix, scoringType):
             alignedSequences, alignmentScore = globalAlign.main(sequencePair, gapPenalty, score_matrix)
             #Calculate distance score by normalizing the alignment score and converting the normalized score to a distance
             distanceScore = CalcDistanceScore(alignmentScore, sequenceList[i], sequence, scoringType)
-            print(f"{seq1Label}, {seq2label}, {distanceScore}")
             #update distanceMatrix with distance score between seq1Label and seq2Label
             distanceMatrix[seq1Label][seq2label] = distanceScore
 
@@ -213,8 +171,6 @@ def Task_3(distanceMatrix):
         for i in range(len(distanceMatrixCopy[0])-1):
             lastRow.append(0)
         distanceMatrixCopy.append(lastRow)
-        print(distanceMatrixCopy)
-
 
     return collapseOrder
 
@@ -324,8 +280,6 @@ def Task_4(collapseOrder, sequenceList, gapPenalty, score_matrix):
         msa[i] = [letter.replace("X","-") for letter in msa[i]]
         msa[i] = ''.join(msa[i])
 
-    print(msa)
-
     #replace "X"s back to gaps "-"
     
 
@@ -333,7 +287,6 @@ def Task_4(collapseOrder, sequenceList, gapPenalty, score_matrix):
 
 def Task_5(alignedSequences, score_matrix):
     columnScoreList = []
-    print(alignedSequences)
     for i in range(len(alignedSequences[0])): #column number
         ## TODO: replace match and mismatchScore with what's found in score matrix
         columnScore = 0
@@ -352,14 +305,6 @@ def Task_5(alignedSequences, score_matrix):
 
     return msaScore
 
-def Task_6(alignedSequences, msaScore, args, titleList):
-    #output Fasta File
-    with open(args.output, "w") as output_file:
-        for i in range(len(alignedSequences)):
-            outputString = "%s; score=%d\n%s\n" % (titleList[i], msaScore, alignedSequences[i])
-            output_file.write(outputString)
-
-    return 0
 
 ##############MSA util file for Final project
 def main(sequenceList, gapPenalty, score_matrix):
@@ -383,7 +328,7 @@ def main(sequenceList, gapPenalty, score_matrix):
     alignedSequences = Task_4(collapseOrder, sequenceList, gapPenalty, score_matrix)
 
     #task 5, calculate score of alignedSequences (Sum of Pairs!)
-    msaScore = Task_5(alignedSequences,gapPenalty, score_matrix)
+    msaScore = Task_5(alignedSequences, score_matrix)
 
 
     return alignedSequences, msaScore
