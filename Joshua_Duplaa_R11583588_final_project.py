@@ -187,16 +187,17 @@ def FindClusterSizeC(possChim, repSeqs, clusters, seenPairs):
 """
 Perform an MSA of non chimeric sequences
 """
-def Task_4(nonChimericClusters):
+def Task_4(nonChimericClusters, gapPenalty, score_matrix):
     #merge all non-chimeric sequences into a single list
     nonChimericSequences = []
     for cluster in nonChimericClusters:
         for sequence in cluster:
             nonChimericSequences.append(sequence)
-
+    
+    alignedNonChiSeqs, msaScore = msa.main(nonChimericSequences, gapPenalty, score_matrix)
     
 
-    return alignedNonChiSeqs
+    return alignedNonChiSeqs, msaScore
 
 
 ##############main implementation
@@ -239,7 +240,7 @@ def main():
     chimericClusters, nonChimericClusters = Task_3(repSeqs, clusters, gapPenalty, score_matrix)
 
     #task 4
-    alignedNonChiSeqs = Task_4(nonChimericClusters, gapPenalty, score_matrix)
+    alignedNonChiSeqs, msaScore = Task_4(nonChimericClusters, gapPenalty, score_matrix)
 
 
 

@@ -361,17 +361,18 @@ def Task_6(alignedSequences, msaScore, args, titleList):
 
     return 0
 
-##############main implementation
-def main(args, sequenceList, gapPenalty, score_matrix):
-    
+##############MSA util file for Final project
+def main(sequenceList, gapPenalty, score_matrix):
+    """
     if args.score_matrix == "input/nucleotide.mtx":
         scoringType = "nucleotide"
     elif args.score_matrix == "input/BLOSUM50.mtx":
         scoringType = "BLOSUM50"
     elif args.score_matrix == "input/BLOSUM62.mtx":
         scoringType = "BLOSUM62"
-    
-    
+    """
+    scoringType = "BLOSUM62"
+
     #task 2, generate distance matrix with all v all global alignemnt
     distanceMatrix = Task_2(sequenceList, gapPenalty, score_matrix, scoringType)
 
@@ -384,9 +385,8 @@ def main(args, sequenceList, gapPenalty, score_matrix):
     #task 5, calculate score of alignedSequences (Sum of Pairs!)
     msaScore = Task_5(alignedSequences,gapPenalty, score_matrix)
 
-    #task 6, output to fasta file
-    Task_6(alignedSequences, msaScore, args, titleList)
-    return 0
+
+    return alignedSequences, msaScore
 
 
 if __name__ == "__main__":
